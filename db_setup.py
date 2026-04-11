@@ -7,8 +7,10 @@ def init_db():
     CREATE TABLE IF NOT EXISTS searches(
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         city TEXT,
+        admin1 TEXT,
         temp REAL,
-        condition TEXT
+        condition TEXT,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
             ) """)
     
     conn.commit()

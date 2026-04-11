@@ -2,27 +2,36 @@
 <html>
 <head>
     <title>Search History</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
 
 <h1>Weather Search History</h1>
 
-<table border="1">
-    <tr>
-        <th>City</th>
-        <th>Temp</th>
-        <th>Condition</th>
-    </tr>
+{% if data %}
+    <table border="1">
+        <tr>
+            <th>City</th>
+            <th>State/Region</th>
+            <th>Temp</th>
+            <th>Condition</th>
+            <th>Timestamp</th>
+        </tr>
 
-    {% for row in data %}
-    <tr>
-        <td>{{ row[0] }}</td>
-        <td>{{ row[1] }}</td>
-        <td>{{ row[2] }}</td>
-    </tr>
-    {% endfor %}
+        {% for row in data %}
+        <tr>
+            <td>{{ row[0] }}</td>
+            <td>{{ row[1] }}</td>
+            <td>{{ row[2] }}</td>
+            <td>{{ row[3] }}</td>
+            <td>{{ row[4] }}</td>
+        </tr>
+        {% endfor %}
 
-</table>
-
+    </table>
+{% else %}
+    <p>No searches yet</p>
+{% endif %}
+<a href="/">Back to search</a>
 </body>
 </html>
