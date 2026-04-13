@@ -4,8 +4,9 @@ body {
   margin: 40px auto;
   padding: 0 16px;
   line-height: 1.4;
+  background-color: #121212;  
+  color: #e0e0e0
 
-  background-color: #121212;   
 }
 
 form {
@@ -36,4 +37,8 @@ button {
 
 button:hover {
   background-color: #444;
+}
+
+a {
+  color: #8ab4f8
 }

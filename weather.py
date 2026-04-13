@@ -1,6 +1,7 @@
 def get_weather(city):
-    from datetime import datetime, date, timedelta
+    from datetime import datetime
     import requests
+
     #convert city to coords with api
     geo_url = "https://geocoding-api.open-meteo.com/v1/search"
     params = {"name" : city, "count" : 1}
@@ -12,19 +13,15 @@ def get_weather(city):
     city_long = geo_data["results"][0]["longitude"]
     admin1 = geo_data["results"][0]["admin1"]
     
-    #fetching today and tomorrows date
-    today = date.today()
-    tomorrow = today + timedelta(days=1)
-
     #send coords to api
     weather_url = "https://api.open-meteo.com/v1/forecast"
     params = {
         "latitude": city_lat,
         "longitude": city_long,
         "temperature_unit": "fahrenheit",
-        "hourly": "temperature_2m,weathercode",
-        "start_date": today.isoformat(),
-        "end_date" : tomorrow.isoformat()}
+        "hourly" : "temperature_2m,weathercode",
+        "forecast_hours": 6,
+        "timezone": "auto"}
 
     weather_response = requests.get(weather_url, params=params)
     weather_data = weather_response.json()
@@ -32,15 +29,6 @@ def get_weather(city):
     temps = weather_data["hourly"]["temperature_2m"]
     codes = weather_data["hourly"]["weathercode"]
     times = weather_data["hourly"]["time"]
-
-    #finding current time in times[]
-    now = datetime.now()
-    start_index = 0
-    for index in range(len(times)):
-        time_dt = datetime.fromisoformat(times[index])
-        if time_dt >= now:
-            start_index = index
-            break
 
     #weathercode table
     WEATHER_CODES = {
@@ -73,9 +61,9 @@ def get_weather(city):
         96: "Thunderstorms and Hail",
         99: "Severe Thunderstorms and Hail"
     }
-    weather_code = codes[start_index]
+    weather_code = codes[0]
     condition = WEATHER_CODES[weather_code]
-    temp = temps[start_index]
+    temp = temps[0]
 
     #display to user
     current = {"temp":temp,
@@ -83,7 +71,7 @@ def get_weather(city):
     forecast = []
     hours_to_show = 5
     for hour in range(hours_to_show):
-        i = start_index + hour
+        i =  hour + 1
         time_str = times[i]
         temp = temps[i]
         code = codes[i]

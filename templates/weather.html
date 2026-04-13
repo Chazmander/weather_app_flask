@@ -6,11 +6,17 @@
 </head>
 <body>
 
-  <h1>Weather Results</h1>
+  <h1>Current Weather</h1>
 
   <p>{{ data.city }}, {{ data.admin1 }}</p>
   <p>{{ data.current.temp }}°F</p>
   <p>{{ data.current.condition }}</p>
+
+  <h2>Weather Forcast</h2>
+
+  {% for item in data.forecast %}
+    <p>{{ item.time }} - {{ item.temp }}°F - {{ item.condition }}</p>
+  {% endfor %}
 
   <a href="/">Back to search</a>
 </body>
