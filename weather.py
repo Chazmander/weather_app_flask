@@ -5,10 +5,15 @@ def get_weather(city):
     #convert city to coords with api
     geo_url = "https://geocoding-api.open-meteo.com/v1/search"
     params = {"name" : city, "count" : 1}
-    geo_response = requests.get(geo_url, params=params)
-    geo_data = geo_response.json()
+    try:
+        geo_response = requests.get(geo_url, params=params)
+        geo_response.raise_for_status()
+        geo_data = geo_response.json()
+    except requests.exceptions.RequestException:
+        return {"error":"Could not reach location service"}
+    
     if "results" not in geo_data or len(geo_data["results"]) == 0:
-        return None
+        return {"error":"City not found"}
     city_lat = geo_data["results"][0]["latitude"]
     city_long = geo_data["results"][0]["longitude"]
     admin1 = geo_data["results"][0]["admin1"]
@@ -23,8 +28,12 @@ def get_weather(city):
         "forecast_hours": 6,
         "timezone": "auto"}
 
-    weather_response = requests.get(weather_url, params=params)
-    weather_data = weather_response.json()
+    try:
+        weather_response = requests.get(weather_url, params=params)
+        weather_response.raise_for_status()
+        weather_data = weather_response.json()
+    except requests.exceptions.RequestException:
+        return {"error": "Could not reach the weather service."}
     #pull data from json
     temps = weather_data["hourly"]["temperature_2m"]
     codes = weather_data["hourly"]["weathercode"]

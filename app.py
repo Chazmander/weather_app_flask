@@ -13,13 +13,13 @@ def weather():
     raw_city = request.args.get("city")
     city = (raw_city or "").strip()
     if not city:
-        return "Please enter a city", 400
+        return render_template("home.html", error="Please enter a city"), 400
     
     city = city.title()
 
     data = get_weather(city)
-    if data is None:
-        return "City not found", 404
+    if "error" in data:
+        return render_template("home.html", error=data["error"]), 404
     
     temp = data["current"]["temp"]
     condition = data["current"]["condition"]

@@ -40,5 +40,10 @@ button:hover {
 }
 
 a {
-  color: #8ab4f8
+  color: #8ab4f8;
+}
+
+.error {
+  color: #ff8a80;
+  margin: 8px 0 12px;
 }
